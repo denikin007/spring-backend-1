@@ -14,7 +14,6 @@ public class ItemInstance extends ModelBase<ItemInstanceDto> {
     @OneToOne
     private Item item;
     private String identifier;// sku
-
     private Boolean featured = Boolean.FALSE;
 
     // todo generalmente se usa BigDecimal
@@ -55,6 +54,14 @@ public class ItemInstance extends ModelBase<ItemInstanceDto> {
 
     public void setFeatured(Boolean featured) {
         this.featured = featured;
+    }
+
+    public ItemInstanceStatus getItemInstanceStatus() {
+        return itemInstanceStatus;
+    }
+
+    public void setItemInstanceStatus(ItemInstanceStatus itemInstanceStatus) {
+        this.itemInstanceStatus = itemInstanceStatus;
     }
 
     /*@Override
