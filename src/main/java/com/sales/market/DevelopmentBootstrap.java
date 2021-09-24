@@ -58,25 +58,27 @@ public class DevelopmentBootstrap implements ApplicationListener<ContextRefreshe
         persistCategoriesAndSubCategories();
         Item maltinItem = persistItems(beverageSubCat);
         persistItemInstances(maltinItem);
+
     }
 
     private void persistItemInstances(Item maltinItem) {
-        ItemInstance maltinItem1 = createItem(maltinItem, "SKU-77721106006158", 5D);
-        ItemInstance maltinItem2 = createItem(maltinItem, "SKU-77721106006159", 5D);
-        ItemInstance maltinItem3 = createItem(maltinItem, "SKU-77721106006160", 5D);
-        ItemInstance maltinItem4 = createItem(maltinItem, "SKU-77721106006161", 5D);
+        ItemInstance maltinItem1 = createItem(maltinItem, "SKU-77721106006158", ItemInstanceStatus.AVAILABLE,5D);
+        ItemInstance maltinItem2 = createItem(maltinItem, "SKU-77721106006159", ItemInstanceStatus.AVAILABLE,5D);
+        ItemInstance maltinItem3 = createItem(maltinItem, "SKU-77721106006160", ItemInstanceStatus.SCREWED, 5D);
+        ItemInstance maltinItem4 = createItem(maltinItem, "SKU-77721106006161", ItemInstanceStatus.SOLD,5D);
         itemInstanceService.save(maltinItem1);
         itemInstanceService.save(maltinItem2);
         itemInstanceService.save(maltinItem3);
         itemInstanceService.save(maltinItem4);
     }
 
-    private ItemInstance createItem(Item maltinItem, String sku, double price) {
+    private ItemInstance createItem(Item maltinItem, String sku, ItemInstanceStatus status,double price) {
         ItemInstance itemInstance = new ItemInstance();
         itemInstance.setItem(maltinItem);
         itemInstance.setFeatured(true);
         itemInstance.setPrice(price);
         itemInstance.setIdentifier(sku);
+        itemInstance.setItemInstanceStatus(status);
         return itemInstance;
     }
 
