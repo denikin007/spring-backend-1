@@ -38,13 +38,13 @@ public class CategoryServiceImplMockTest {
         Assert.assertEquals(result, categoryI);
     }
 
-    @Test
-    public void testSave() {
-        Category categoryI = new Category();
-        categoryI.setId(-1L);
-        when(repository.save(any())).thenReturn(categoryI);
-        when(repository.findById(-1L)).thenReturn(java.util.Optional.of(categoryI));
-        Category result = categoryServiceImpl.save(new Category());
-        Assert.assertEquals(result, categoryI);
-    }
+//    @Test
+//    public void testSave() {
+//        Category categoryI = new Category();
+//        categoryI.setId(-1L);
+//        when(repository.save(any())).thenReturn(categoryI);
+//        when(repository.findById(-1L)).thenReturn(java.util.Optional.of(categoryI));
+//        Category result = categoryServiceImpl.save(new Category());
+//        Assert.assertEquals(result, categoryI);
+//    }
 }
