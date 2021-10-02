@@ -6,10 +6,7 @@ package com.sales.market;
 
 import com.sales.market.model.*;
 import com.sales.market.repository.BuyRepository;
-import com.sales.market.service.CategoryService;
-import com.sales.market.service.ItemInstanceService;
-import com.sales.market.service.ItemService;
-import com.sales.market.service.SubCategoryService;
+import com.sales.market.service.*;
 import io.micrometer.core.instrument.util.IOUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -27,6 +24,8 @@ public class DevelopmentBootstrap implements ApplicationListener<ContextRefreshe
     private final SubCategoryService subCategoryService;
     private final ItemService itemService;
     private final ItemInstanceService itemInstanceService;
+    private final ItemInventoryService itemInventoryService;
+    private final ItemInventoryEntryService itemInventoryEntryService;
 
     SubCategory beverageSubCat = null;
 
@@ -34,12 +33,15 @@ public class DevelopmentBootstrap implements ApplicationListener<ContextRefreshe
     // bean pueden tener muchos campos y otros beans asociados
 
     public DevelopmentBootstrap(BuyRepository buyRepository, CategoryService categoryService,
-            SubCategoryService subCategoryService, ItemService itemService, ItemInstanceService itemInstanceService) {
+                                SubCategoryService subCategoryService, ItemService itemService,
+                                ItemInstanceService itemInstanceService, ItemInventoryService itemInventoryService, ItemInventoryEntryService itemInventoryEntryService) {
         this.buyRepository = buyRepository;
         this.categoryService = categoryService;
         this.subCategoryService = subCategoryService;
         this.itemService = itemService;
         this.itemInstanceService = itemInstanceService;
+        this.itemInventoryService = itemInventoryService;
+        this.itemInventoryEntryService = itemInventoryEntryService;
     }
 
     @Override
@@ -57,8 +59,20 @@ public class DevelopmentBootstrap implements ApplicationListener<ContextRefreshe
         persistBuy(BigDecimal.ONE);
         persistCategoriesAndSubCategories();
         Item maltinItem = persistItems(beverageSubCat);
-        persistItemInstances(maltinItem);
-
+        //persistItemInstances(maltinItem);
+        ItemInventory itemInventory = new ItemInventory();
+        itemInventory.setItem(maltinItem);
+        itemInventory.setUpperBoundThreshold(BigDecimal.valueOf(20));
+        itemInventory.setLowerBoundThreshold(BigDecimal.valueOf(5));
+        itemInventory.setStockQuantity(BigDecimal.valueOf(0));
+        itemInventory.setTotalPrice(itemInventory.getStockQuantity().multiply(BigDecimal.valueOf(5)));
+        ItemInventory itemInventory1 = itemInventoryService.save(itemInventory);
+        ItemInventoryEntry itemInventoryEntry = new ItemInventoryEntry();
+        itemInventoryEntry.setItemInstanceSkus("SKU-77721106006158,SKU-77721106006159,SKU-77721106006160");
+        itemInventoryEntry.setItemInventory(itemInventory1);
+        itemInventoryEntry.setQuantity(BigDecimal.valueOf(3));
+        itemInventoryEntry.setMovementType(MovementType.BUY);
+        itemInventoryEntryService.save(itemInventoryEntry);
     }
 
     private void persistItemInstances(Item maltinItem) {
@@ -136,5 +150,16 @@ public class DevelopmentBootstrap implements ApplicationListener<ContextRefreshe
         Buy buy = new Buy();
         buy.setValue(value);
         buyRepository.save(buy);
+    }
+
+    private void persistenItemInventory(){
+        ItemInventory itemInventory = new ItemInventory();
+        Item item = itemService.findById(1L);
+        itemInventory.setItem(item);
+        itemInventory.setLowerBoundThreshold(BigDecimal.valueOf(5));
+        itemInventory.setStockQuantity(BigDecimal.valueOf(10));
+        itemInventory.setTotalPrice(BigDecimal.valueOf(100));
+        itemInventory.setUpperBoundThreshold(BigDecimal.valueOf(20));
+        itemInventoryService.save(itemInventory);
     }
 }

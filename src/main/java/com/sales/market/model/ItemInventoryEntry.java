@@ -7,13 +7,14 @@ package com.sales.market.model;
 import com.sales.market.dto.ItemInventoryEntryDto;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 
 @Entity
 public class ItemInventoryEntry extends ModelBase<ItemInventoryEntryDto> {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ItemInventory itemInventory;
     private MovementType movementType;
     private BigDecimal quantity; // represent sale or buy instances quantity

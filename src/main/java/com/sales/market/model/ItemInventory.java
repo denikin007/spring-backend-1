@@ -11,10 +11,11 @@ import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 
 @Entity
-public class ItemInventory extends ModelBase<ItemInventoryDto> {
+public class ItemInventory extends ModelBase {
 
     @OneToOne()
     private Item item;
+
     private BigDecimal stockQuantity;
     private BigDecimal lowerBoundThreshold;
     private BigDecimal upperBoundThreshold;

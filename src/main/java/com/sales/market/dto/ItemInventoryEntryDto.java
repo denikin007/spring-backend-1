@@ -7,18 +7,18 @@ import com.sales.market.model.MovementType;
 import java.math.BigDecimal;
 
 public class ItemInventoryEntryDto extends DtoBase<ItemInventoryEntry>{
-    private ItemInventory itemInventory;
+    //private ItemInventory itemInventory;
     private MovementType movementType;
     private BigDecimal quantity; // represent sale or buy instances quantity
     private String itemInstanceSkus; //represents a list of the sku of the involved item instances
 
-    public ItemInventory getItemInventory() {
-        return itemInventory;
-    }
+//    public ItemInventory getItemInventory() {
+//        return itemInventory;
+//    }
 
-    public void setItemInventory(ItemInventory itemInventory) {
-        this.itemInventory = itemInventory;
-    }
+//    public void setItemInventory(ItemInventory itemInventory) {
+//        this.itemInventory = itemInventory;
+//    }
 
     public MovementType getMovementType() {
         return movementType;
